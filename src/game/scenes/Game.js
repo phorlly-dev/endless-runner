@@ -3,31 +3,37 @@ import {
   GAME_OVER,
   GAME_START,
   GAME_WIDTH,
-  hideShowControls,
-  hideShowUI,
   LOAD_ASSETS,
   setPower,
   setScore,
+  toggleControls,
+  toggleUI,
 } from '../const';
+import {
+  orange_color,
+  primary_color,
+  purple_color,
+  success_color,
+  warning_color,
+  white_color,
+} from '../const/colors';
 
-export class Game extends Phaser.Scene {
+class Game extends Phaser.Scene {
     constructor() {
         super(GAME_START);
     }
 
     init() {
-        this.game = this;
         this.player = null;
-        this.bars = null;
         this.power = 100;
         this.score = 0;
-        this.gameOver = false;
         this.isPaused = false;
-        hideShowControls(true);
-        hideShowUI(true);
+        toggleControls(true);
+        toggleUI(true);
     }
 
     create() {
+        this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, LOAD_ASSETS.KEY.BACKGROUND);
         // Create player
         this.player = this.add
             .sprite(GAME_WIDTH / 2, GAME_HEIGHT, LOAD_ASSETS.KEY.PLAYER)
@@ -76,29 +82,35 @@ export class Game extends Phaser.Scene {
 
         // Create pause text (initially hidden)
         this.pauseText = this.add
-            .text(400, 300, "PAUSED", {
+            .text(GAME_WIDTH / 2, GAME_HEIGHT / 3, "PAUSED", {
                 fontSize: "48px",
-                fill: "#ffffff",
+                fill: white_color,
                 fontWeight: "bold",
+                stroke: primary_color,
+                strokeThickness: 12,
             })
             .setOrigin(0.5)
             .setVisible(false);
 
         this.pauseInstructions = this.add
-            .text(400, 360, "Click or Press SPACE to Resume", {
+            .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, "Click or Press SPACE to Resume", {
                 fontSize: "20px",
-                fill: "#3498db",
+                fill: primary_color,
                 fontWeight: "bold",
+                stroke: success_color,
+                strokeThickness: 12,
             })
             .setOrigin(0.5)
             .setVisible(false);
+
+        this.restartGame();
     }
 
     update() {
-        if (this.gameOver || this.isPaused) return;
+        if (this.isPaused) return;
 
         // Player movement
-        let speed = this.power <= 100 ? 300 : this.power;
+        const speed = Phaser.Math.Clamp(this.power * 1.5, 150, 600);
 
         if (this.cursors.left.isDown || this.wasd.A.isDown) {
             this.player.body.setVelocityX(-speed);
@@ -141,17 +153,17 @@ export class Game extends Phaser.Scene {
 
         // Check game over
         if (this.power <= 0) {
+            this.sound.play(LOAD_ASSETS.KEY.END);
             this.scene.start(GAME_OVER, {
                 score: this.score,
                 ui: false,
                 controls: false,
             });
-            this.restartGame();
         }
     }
 
     spawnBoxes() {
-        if (this.gameOver || this.isPaused) return;
+        if (this.isPaused) return;
 
         // Random positions, but ensure some separation
         const x1 = Phaser.Math.Between(80, 350);
@@ -163,13 +175,21 @@ export class Game extends Phaser.Scene {
         const powerX = leftIsPower ? x1 : x2;
         const scoreX = leftIsPower ? x2 : x1;
 
-        // Create power box (purple)
-        const powerBox = this.add.rectangle(powerX, -50, 60, 60, 0x9b59b6);
+        // Create power box (purple) with rounded corners
+        const powerBox = this.add.graphics();
+        powerBox.fillStyle(purple_color);
+        powerBox.fillRoundedRect(-30, -30, 60, 60, 12);
+        powerBox.x = powerX;
+        powerBox.y = -50;
         this.physics.add.existing(powerBox);
         this.powerBoxes.add(powerBox);
 
-        // Create score box (orange)
-        const scoreBox = this.add.rectangle(scoreX, -50, 60, 60, 0xe67e22);
+        // Create score box (orange) with rounded corners
+        const scoreBox = this.add.graphics();
+        scoreBox.fillStyle(orange_color);
+        scoreBox.fillRoundedRect(-30, -30, 60, 60, 12);
+        scoreBox.x = scoreX;
+        scoreBox.y = -50;
         this.physics.add.existing(scoreBox);
         this.scoreBoxes.add(scoreBox);
 
@@ -199,7 +219,7 @@ export class Game extends Phaser.Scene {
         const powerText = this.add
             .text(powerX, -50, `${powerOp}${powerValue}`, {
                 fontSize: "16px",
-                fill: "#ffffff",
+                fill: white_color,
                 fontWeight: "bold",
             })
             .setOrigin(0.5);
@@ -207,7 +227,7 @@ export class Game extends Phaser.Scene {
         const scoreText = this.add
             .text(scoreX, -50, `${scoreOp}${scoreValue}`, {
                 fontSize: "16px",
-                fill: "#ffffff",
+                fill: white_color,
                 fontWeight: "bold",
             })
             .setOrigin(0.5);
@@ -222,18 +242,18 @@ export class Game extends Phaser.Scene {
     }
 
     togglePause() {
-        if (this.gameOver) return;
-
         this.isPaused = !this.isPaused;
 
         if (this.isPaused) {
             // Pause the game
+            this.sound.play(LOAD_ASSETS.KEY.CL);
             this.physics.pause();
             this.spawnTimer.paused = true;
             this.pauseText.setVisible(true);
             this.pauseInstructions.setVisible(true);
         } else {
             // Resume the game
+            this.sound.play(LOAD_ASSETS.KEY.ON);
             this.physics.resume();
             this.spawnTimer.paused = false;
             this.pauseText.setVisible(false);
@@ -244,12 +264,15 @@ export class Game extends Phaser.Scene {
     collectPowerBox(player, powerBox) {
         // Apply power operation
         if (powerBox.operation === "x") {
+            this.sound.play(LOAD_ASSETS.KEY.HP);
             this.power *= powerBox.value;
         } else if (powerBox.operation === "/") {
+            this.sound.play(LOAD_ASSETS.KEY.HL);
             this.power = Math.floor(this.power / powerBox.value);
         }
 
         // Create power collection effect
+        this.sound.play(LOAD_ASSETS.KEY.LD);
         this.createPowerEffect(
             powerBox.x,
             powerBox.y,
@@ -269,12 +292,15 @@ export class Game extends Phaser.Scene {
     collectScoreBox(player, scoreBox) {
         // Apply score operation
         if (scoreBox.operation === "+") {
+            this.sound.play(LOAD_ASSETS.KEY.HP);
             this.score += scoreBox.value;
         } else if (scoreBox.operation === "-") {
+            this.sound.play(LOAD_ASSETS.KEY.HL);
             this.score = Math.max(0, this.score - scoreBox.value);
         }
 
         // Create score collection effect
+        this.sound.play(LOAD_ASSETS.KEY.LD);
         this.createScoreEffect(
             scoreBox.x,
             scoreBox.y,
@@ -315,9 +341,9 @@ export class Game extends Phaser.Scene {
         const popup = this.add
             .text(x, y - 30, changeText, {
                 fontSize: "20px",
-                fill: "#9b59b6",
+                fill: warning_color,
                 fontWeight: "bold",
-                stroke: "#ffffff",
+                stroke: white_color,
                 strokeThickness: 2,
             })
             .setOrigin(0.5);
@@ -325,7 +351,7 @@ export class Game extends Phaser.Scene {
         const result = this.add
             .text(x, y - 10, resultText, {
                 fontSize: "14px",
-                fill: "#ffffff",
+                fill: white_color,
                 fontWeight: "bold",
             })
             .setOrigin(0.5);
@@ -377,9 +403,9 @@ export class Game extends Phaser.Scene {
         const popup = this.add
             .text(x, y - 30, changeText, {
                 fontSize: "20px",
-                fill: "#e67e22",
+                fill: success_color,
                 fontWeight: "bold",
-                stroke: "#ffffff",
+                stroke: white_color,
                 strokeThickness: 2,
             })
             .setOrigin(0.5);
@@ -387,7 +413,7 @@ export class Game extends Phaser.Scene {
         const result = this.add
             .text(x, y - 10, resultText, {
                 fontSize: "14px",
-                fill: "#ffffff",
+                fill: white_color,
                 fontWeight: "bold",
             })
             .setOrigin(0.5);
@@ -418,10 +444,11 @@ export class Game extends Phaser.Scene {
     restartGame() {
         this.power = 100;
         this.score = 0;
-        this.gameOver = false;
         this.isPaused = false;
 
         setPower(this.power);
         setScore(this.score);
     }
 }
+
+export default Game;

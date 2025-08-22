@@ -1,37 +1,34 @@
-import { Scene } from 'phaser';
-
 import {
   GAME_HEIGHT,
   GAME_OVER,
   GAME_START,
   GAME_WIDTH,
-  hideShowControls,
-  hideShowUI,
   PRESS_RESTART,
+  toggleControls,
+  toggleUI,
 } from '../const';
 import {
   black_color,
-  blue_color,
+  error_color,
   primary_color,
   secondary_color,
-  success_color,
   white_color,
 } from '../const/colors';
 
-export class GameOver extends Scene {
+class GameOver extends Phaser.Scene {
     constructor() {
         super(GAME_OVER);
     }
 
     create(data) {
-        hideShowUI(data.ui);
-        hideShowControls(data.controls);
+        toggleControls(data.ui);
+        toggleUI(data.controls);
         const fontSize = 64;
-        this.cameras.main.setBackgroundColor(success_color);
+        this.cameras.main.setBackgroundColor(secondary_color);
 
         this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 4, 'GAME OVER!', {
             fontFamily: 'Arial Black', fontSize: fontSize, color: primary_color,
-            stroke: secondary_color, strokeThickness: 12,
+            stroke: error_color, strokeThickness: 12,
             align: 'center'
         }).setOrigin(0.5);
 
@@ -46,18 +43,22 @@ export class GameOver extends Scene {
                 fontFamily: "Lucida Console",
                 fontSize: fontSize / 4,
                 color: secondary_color,
-                stroke: blue_color,
+                stroke: primary_color,
                 strokeThickness: 8,
                 align: "center",
             })
             .setOrigin(0.5);
 
         this.input.once("pointerdown", () => {
+            this.sound.play(LOAD_ASSETS.KEY.ON);
             this.scene.start(GAME_START);
         });
 
         this.input.keyboard.on("keydown-SPACE", () => {
+            this.sound.play(LOAD_ASSETS.KEY.ON);
             this.scene.start(GAME_START);
         });
     }
 }
+
+export default GameOver;

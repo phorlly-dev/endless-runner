@@ -11,7 +11,13 @@ This template has been updated for:
 - [Phaser 3.90.0](https://github.com/phaserjs/phaser)
 - [Parcel 2.14.4](https://github.com/parcel-bundler/parcel)
 
+## First screen of game starting
+
 ![screenshot](screenshot.png)
+
+## Second screen of game playing
+
+![screenshot](screenshot2.png)
 
 ## Requirements
 
@@ -44,9 +50,9 @@ We have provided a default project structure to get you started. This is as foll
 | `public/index.html` | A basic HTML page to contain the game.                |
 | `public/assets`     | Game sprites, audio, etc. Served directly at runtime. |
 | `public/style.css`  | Global layout styles.                                 |
-| `src/main.js`       | Application bootstrap.                                |
+| `src/index.js`      | Application bootstrap.                                |
 | `src/game`          | Folder containing the game code.                      |
-| `src/game/main.js`  | Game entry point: configures and starts the game.     |
+| `src/game/Start.js` | Game entry point: configures and starts the game.     |
 | `src/game/scenes`   | Folder with all Phaser game scenes.                   |
 
 ## Handling Assets

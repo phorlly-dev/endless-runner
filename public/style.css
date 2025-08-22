@@ -46,11 +46,13 @@ body {
   max-width: 600px;
   line-height: 1;
   margin: 0 auto;
+  display: none;
 }
 #ui {
   color: white;
   font-size: 18px;
-  margin: 12px;
+  margin: 14px;
+  display: none;
 }
 #ui .power {
   display: inline-block;

@@ -1,12 +1,10 @@
-import { Scene } from 'phaser';
-
 import {
   GAME_MENU,
   GAME_PRELOAD,
   LOAD_ASSETS,
 } from '../const';
 
-export class Preloader extends Scene {
+class Preloader extends Phaser.Scene {
     constructor() {
         super(GAME_PRELOAD);
     }
@@ -43,3 +41,5 @@ export class Preloader extends Scene {
         this.scene.start(GAME_MENU);
     }
 }
+
+export default Preloader;

@@ -12,16 +12,28 @@ const LOAD_ASSETS = {
     KEY: {
         BACKGROUND: 'background',
         LOGO: 'logo',
-        PLAYER: 'player'
+        PLAYER: 'player',
+        HP: 'hp',
+        LD: 'ld',
+        HL: 'hl',
+        END: 'end',
+        CL: 'cl',
+        ON: 'on',
     },
     PATH: {
         BACKGROUND: 'assets/bg.png',
         LOGO: 'assets/logo.png',
-        PLAYER: 'assets/person.png'
+        PLAYER: 'assets/person.png',
+        HP: 'assets/hp.mp3',
+        LD: 'assets/ld.mp3',
+        HL: 'assets/hl.wav',
+        END: 'assets/end.wav',
+        CL: 'assets/cl.ogg',
+        ON: 'assets/on.ogg',
     }
 };
 
-const hideShowControls = (isVisible) => {
+const toggleControls = (isVisible) => {
     const controls = document.getElementById('controls');
     if (isVisible) {
         return controls.style.display = 'block';
@@ -30,7 +42,7 @@ const hideShowControls = (isVisible) => {
     }
 };
 
-const hideShowUI = (isVisible) => {
+const toggleUI = (isVisible) => {
     const ui = document.getElementById('ui');
     if (isVisible) {
         return ui.style.display = 'block';
@@ -54,11 +66,11 @@ export {
   GAME_PRELOAD,
   GAME_START,
   GAME_WIDTH,
-  hideShowControls,
-  hideShowUI,
   LOAD_ASSETS,
   PRESS_RESTART,
   PRESS_START,
   setPower,
   setScore,
+  toggleControls,
+  toggleUI,
 };
