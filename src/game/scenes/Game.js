@@ -1,9 +1,11 @@
 import {
+  exponentFromValue,
   GAME_HEIGHT,
   GAME_OVER,
   GAME_START,
   GAME_WIDTH,
   LOAD_ASSETS,
+  powersOf2,
   setPower,
   setScore,
   toggleControls,
@@ -197,7 +199,7 @@ class Game extends Phaser.Scene {
         const powerOp = Phaser.Math.RND.pick(["x", "/"]);
         let powerValue;
         if (powerOp === "x") {
-            powerValue = Phaser.Math.Between(2, 4);
+            powerValue = powersOf2(Phaser.Math.Between(1, 10));
         } else {
             powerValue = Phaser.Math.Between(2, 3);
         }
@@ -246,33 +248,32 @@ class Game extends Phaser.Scene {
 
         if (this.isPaused) {
             // Pause the game
-            this.sound.play(LOAD_ASSETS.KEY.CL);
             this.physics.pause();
             this.spawnTimer.paused = true;
             this.pauseText.setVisible(true);
             this.pauseInstructions.setVisible(true);
+            this.sound.play(LOAD_ASSETS.KEY.CL);
         } else {
             // Resume the game
-            this.sound.play(LOAD_ASSETS.KEY.ON);
             this.physics.resume();
             this.spawnTimer.paused = false;
             this.pauseText.setVisible(false);
             this.pauseInstructions.setVisible(false);
+            this.sound.play(LOAD_ASSETS.KEY.ON);
         }
     }
 
     collectPowerBox(player, powerBox) {
         // Apply power operation
         if (powerBox.operation === "x") {
+            this.power += exponentFromValue(powerBox.value) * 10;
             this.sound.play(LOAD_ASSETS.KEY.HP);
-            this.power *= powerBox.value;
         } else if (powerBox.operation === "/") {
-            this.sound.play(LOAD_ASSETS.KEY.HL);
             this.power = Math.floor(this.power / powerBox.value);
+            this.sound.play(LOAD_ASSETS.KEY.HL);
         }
 
         // Create power collection effect
-        this.sound.play(LOAD_ASSETS.KEY.LD);
         this.createPowerEffect(
             powerBox.x,
             powerBox.y,
@@ -280,6 +281,7 @@ class Game extends Phaser.Scene {
             powerBox.value,
             this.power
         );
+        this.sound.play(LOAD_ASSETS.KEY.LD);
 
         // Update UI
         setPower(this.power);
@@ -292,15 +294,14 @@ class Game extends Phaser.Scene {
     collectScoreBox(player, scoreBox) {
         // Apply score operation
         if (scoreBox.operation === "+") {
-            this.sound.play(LOAD_ASSETS.KEY.HP);
             this.score += scoreBox.value;
+            this.sound.play(LOAD_ASSETS.KEY.HP);
         } else if (scoreBox.operation === "-") {
-            this.sound.play(LOAD_ASSETS.KEY.HL);
             this.score = Math.max(0, this.score - scoreBox.value);
+            this.sound.play(LOAD_ASSETS.KEY.HL);
         }
 
         // Create score collection effect
-        this.sound.play(LOAD_ASSETS.KEY.LD);
         this.createScoreEffect(
             scoreBox.x,
             scoreBox.y,
@@ -308,6 +309,7 @@ class Game extends Phaser.Scene {
             scoreBox.value,
             this.score
         );
+        this.sound.play(LOAD_ASSETS.KEY.LD);
 
         // Update UI
         setScore(this.score);

@@ -1,64 +1,61 @@
 const GAME_WIDTH = 850;
 const GAME_HEIGHT = 600;
-const GAME_MENU = 'game-menu';
-const GAME_OVER = 'game-over';
-const GAME_BOOT = 'game-boot';
-const GAME_START = 'game-start';
-const GAME_PRELOAD = 'game-preload';
+const GAME_MENU = "game-menu";
+const GAME_OVER = "game-over";
+const GAME_BOOT = "game-boot";
+const GAME_START = "game-start";
+const GAME_PRELOAD = "game-preload";
 const PRESS_START = "Click or Press SPACE to Start";
 const PRESS_RESTART = "Click or Press SPACE to Restart";
 
 const LOAD_ASSETS = {
     KEY: {
-        BACKGROUND: 'background',
-        LOGO: 'logo',
-        PLAYER: 'player',
-        HP: 'hp',
-        LD: 'ld',
-        HL: 'hl',
-        END: 'end',
-        CL: 'cl',
-        ON: 'on',
+        BACKGROUND: "background",
+        LOGO: "logo",
+        PLAYER: "player",
+        HP: "hp",
+        LD: "ld",
+        HL: "hl",
+        END: "end",
+        CL: "cl",
+        ON: "on",
     },
     PATH: {
-        BACKGROUND: 'assets/bg.png',
-        LOGO: 'assets/logo.png',
-        PLAYER: 'assets/person.png',
-        HP: 'assets/hp.mp3',
-        LD: 'assets/ld.mp3',
-        HL: 'assets/hl.wav',
-        END: 'assets/end.wav',
-        CL: 'assets/cl.ogg',
-        ON: 'assets/on.ogg',
-    }
+        BACKGROUND: "assets/bg.png",
+        LOGO: "assets/logo.png",
+        PLAYER: "assets/person.png",
+        HP: "assets/hp.mp3",
+        LD: "assets/ld.mp3",
+        HL: "assets/hl.wav",
+        END: "assets/end.wav",
+        CL: "assets/cl.ogg",
+        ON: "assets/on.ogg",
+    },
 };
 
-const toggleControls = (isVisible) => {
-    const { style } = document.getElementById('controls');
-    if (isVisible) {
-        return style.display = 'block';
-    } else {
-        return style.display = 'none';
-    }
-};
+const toggleControls = (isVisible) =>
+(document.getElementById("controls").style.display = isVisible
+    ? "block"
+    : "none");
 
-const toggleUI = (isVisible) => {
-    const { style } = document.getElementById('ui');
-    if (isVisible) {
-        return style.display = 'block';
-    } else {
-        return style.display = 'none';
-    }
-};
+const toggleUI = (isVisible) =>
+    (document.getElementById("ui").style.display = isVisible ? "block" : "none");
 
 const setPower = (power) =>
-    document.getElementById('power').textContent = power;
-
+    (document.getElementById("power").textContent = power);
 
 const setScore = (score) =>
-    document.getElementById('score').textContent = score;
+    (document.getElementById("score").textContent = score);
+
+const powersOf2 = (val) => Math.pow(2, val);
+
+const exponentFromValue = (val) => {
+    const exp = Math.log2(val);
+    return Number.isInteger(exp) ? exp : val;
+}
 
 export {
+  exponentFromValue,
   GAME_BOOT,
   GAME_HEIGHT,
   GAME_MENU,
@@ -67,6 +64,7 @@ export {
   GAME_START,
   GAME_WIDTH,
   LOAD_ASSETS,
+  powersOf2,
   PRESS_RESTART,
   PRESS_START,
   setPower,

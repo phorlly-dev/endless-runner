@@ -3,6 +3,7 @@ import {
   GAME_OVER,
   GAME_START,
   GAME_WIDTH,
+  LOAD_ASSETS,
   PRESS_RESTART,
   toggleControls,
   toggleUI,
