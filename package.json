@@ -6,7 +6,7 @@
     "browserslist": "> 0.25%, last 2 versions, not dead",
     "scripts": {
         "dev": "node log.js dev & parcel index.html --no-cache --config ./parcel/.parcel.dev --open",
-        "build": "node log.js build && parcel build index.html --public-url ./ --no-source-maps --log-level error",
+        "build": "node log.js build & parcel build index.html --public-url _relativeroute_ --no-source-maps --log-level error --config ./parcel/.parcel.prod",
         "dev-nolog": "parcel index.html --no-cache --config ./parcel/.parcel.dev --open",
         "build-nolog": "parcel build index.html --public-url _relativeroute_ --no-source-maps --log-level error --config ./parcel/.parcel.prod"
     },
@@ -25,7 +25,6 @@
         "@parcel/transformer-glsl": "2.14.4",
         "express": "5.1.0",
         "parcel": "2.14.4",
-        "@parcel/config-default": "^2.12.0",
         "parcel-reporter-clean-dist": "^1.0.4",
         "parcel-reporter-static-files-copy": "^1.5.3",
         "process": "^0.11.10"
