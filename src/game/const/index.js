@@ -34,20 +34,20 @@ const LOAD_ASSETS = {
 };
 
 const toggleControls = (isVisible) => {
-    const controls = document.getElementById('controls');
+    const { style } = document.getElementById('controls');
     if (isVisible) {
-        return controls.style.display = 'block';
+        return style.display = 'block';
     } else {
-        return controls.style.display = 'none';
+        return style.display = 'none';
     }
 };
 
 const toggleUI = (isVisible) => {
-    const ui = document.getElementById('ui');
+    const { style } = document.getElementById('ui');
     if (isVisible) {
-        return ui.style.display = 'block';
+        return style.display = 'block';
     } else {
-        return ui.style.display = 'none';
+        return style.display = 'none';
     }
 };
 
