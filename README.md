@@ -50,7 +50,7 @@ We have provided a default project structure to get you started. This is as foll
 | `public/index.html` | A basic HTML page to contain the game.                |
 | `public/assets`     | Game sprites, audio, etc. Served directly at runtime. |
 | `public/style.css`  | Global layout styles.                                 |
-| `src/index.js`      | Application bootstrap.                                |
+| `src/main.js`       | Application bootstrap.                                |
 | `src/game`          | Folder containing the game code.                      |
 | `src/game/Start.js` | Game entry point: configures and starts the game.     |
 | `src/game/scenes`   | Folder with all Phaser game scenes.                   |

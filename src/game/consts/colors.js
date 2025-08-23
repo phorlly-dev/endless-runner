@@ -11,7 +11,6 @@ const error_color = '#f44336';
 export {
   black_color,
   error_color,
-  green_color,
   orange_color,
   primary_color,
   purple_color,

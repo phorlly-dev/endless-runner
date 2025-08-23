@@ -7,11 +7,8 @@ import {
   PRESS_START,
   toggleControls,
   toggleUI,
-} from '../const';
-import {
-  black_color,
-  white_color,
-} from '../const/colors';
+} from '../consts';
+import { setText } from '../utils';
 
 class MainMenu extends Phaser.Scene {
     constructor() {
@@ -24,16 +21,7 @@ class MainMenu extends Phaser.Scene {
         this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, LOAD_ASSETS.KEY.BACKGROUND);
         this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100, LOAD_ASSETS.KEY.LOGO);
 
-        this.add
-            .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 100, PRESS_START, {
-                fontFamily: "Arial Black",
-                fontSize: 24,
-                color: white_color,
-                stroke: black_color,
-                strokeThickness: 16,
-                align: "center",
-            })
-            .setOrigin(0.5);
+        setText({ scene: this, y: 100, text: PRESS_START, strokeThickness: 16 });
 
         this.input.once("pointerdown", () => {
             this.sound.play(LOAD_ASSETS.KEY.ON);

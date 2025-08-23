@@ -19,33 +19,30 @@ const LOAD_ASSETS = {
         END: "end",
         CL: "cl",
         ON: "on",
+        WALK: "walk",
     },
     PATH: {
         BACKGROUND: "assets/bg.png",
         LOGO: "assets/logo.png",
-        PLAYER: "assets/person.png",
+        PLAYER: "assets/player.png",
         HP: "assets/hp.mp3",
         LD: "assets/ld.mp3",
         HL: "assets/hl.wav",
         END: "assets/end.wav",
         CL: "assets/cl.ogg",
         ON: "assets/on.ogg",
+        ON: "assets/on.ogg",
+        WALK: "assets/walk.ogg",
     },
 };
 
-const toggleControls = (isVisible) =>
-(document.getElementById("controls").style.display = isVisible
-    ? "block"
-    : "none");
+const toggleControls = (isVisible) => getById("controls").style.display = isVisible ? "block" : "none";
 
-const toggleUI = (isVisible) =>
-    (document.getElementById("ui").style.display = isVisible ? "block" : "none");
+const toggleUI = (isVisible) => getById("ui").style.display = isVisible ? "block" : "none";
 
-const setPower = (power) =>
-    (document.getElementById("power").textContent = power);
+const setPower = (power) => getById("power").textContent = power;
 
-const setScore = (score) =>
-    (document.getElementById("score").textContent = score);
+const setScore = (score) => getById("score").textContent = score;
 
 const powersOf2 = (val) => Math.pow(2, val);
 
@@ -53,6 +50,8 @@ const exponentFromValue = (val) => {
     const exp = Math.log2(val);
     return Number.isInteger(exp) ? exp : val;
 }
+
+const getById = (id) => document.getElementById(id);
 
 export {
   exponentFromValue,
@@ -63,6 +62,7 @@ export {
   GAME_PRELOAD,
   GAME_START,
   GAME_WIDTH,
+  getById,
   LOAD_ASSETS,
   powersOf2,
   PRESS_RESTART,

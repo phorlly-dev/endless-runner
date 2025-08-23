@@ -2,7 +2,7 @@ import {
   GAME_MENU,
   GAME_PRELOAD,
   LOAD_ASSETS,
-} from '../const';
+} from '../consts';
 
 class Preloader extends Phaser.Scene {
     constructor() {

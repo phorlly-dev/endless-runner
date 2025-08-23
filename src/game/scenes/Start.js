@@ -3,7 +3,7 @@ import * as Phaser from 'phaser';
 import {
   GAME_HEIGHT,
   GAME_WIDTH,
-} from '../const';
+} from '../consts';
 import Boot from './Boot';
 import Game from './Game';
 import GameOver from './GameOver';
@@ -31,8 +31,6 @@ const config = {
     scene: [Boot, Preloader, MainMenu, Game, GameOver],
 };
 
-const StartGame = (parent) => {
-    return new Phaser.Game({ ...config, parent });
-};
+const StartGame = (parent) => new Phaser.Game({ ...config, parent });
 
 export default StartGame;

@@ -1,20 +1,17 @@
 import {
-  GAME_HEIGHT,
   GAME_OVER,
   GAME_START,
-  GAME_WIDTH,
   LOAD_ASSETS,
   PRESS_RESTART,
   toggleControls,
   toggleUI,
-} from '../const';
+} from '../consts';
 import {
-  black_color,
   error_color,
   primary_color,
   secondary_color,
-  white_color,
-} from '../const/colors';
+} from '../consts/colors';
+import { setText } from '../utils';
 
 class GameOver extends Phaser.Scene {
     constructor() {
@@ -24,31 +21,36 @@ class GameOver extends Phaser.Scene {
     create(data) {
         toggleControls(data.ui);
         toggleUI(data.controls);
-        const fontSize = 64;
+
         this.cameras.main.setBackgroundColor(secondary_color);
 
-        this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 4, 'GAME OVER!', {
-            fontFamily: 'Arial Black', fontSize: fontSize, color: primary_color,
-            stroke: error_color, strokeThickness: 12,
-            align: 'center'
-        }).setOrigin(0.5);
-
-        this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 40, `Final Score: ${data.score}`, {
-            fontFamily: 'Arial', fontSize: fontSize / 2, color: white_color,
-            stroke: black_color, strokeThickness: 10,
-            align: 'center'
-        }).setOrigin(0.5);
-
-        this.add
-            .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 100, PRESS_RESTART, {
-                fontFamily: "Lucida Console",
-                fontSize: fontSize / 4,
-                color: secondary_color,
-                stroke: primary_color,
-                strokeThickness: 8,
-                align: "center",
-            })
-            .setOrigin(0.5);
+        const fontSize = 64;
+        setText({
+            scene: this,
+            y: -120,
+            text: "GAME OVER!",
+            font: "Arial Black",
+            size: fontSize,
+            stroke: primary_color,
+            color: error_color,
+        });
+        setText({
+            scene: this,
+            y: -12,
+            text: `Final Score: ${data.score}`,
+            font: "Arial",
+            size: fontSize / 2,
+            strokeThickness: 10,
+        });
+        setText({
+            scene: this,
+            y: 100,
+            text: PRESS_RESTART,
+            font: "Lucida Console",
+            size: fontSize / 4,
+            color: primary_color,
+            strokeThickness: 8,
+        });
 
         this.input.once("pointerdown", () => {
             this.sound.play(LOAD_ASSETS.KEY.ON);
